@@ -1,0 +1,17 @@
+# Potato Disease Classification - Requirements
+
+# Deep Learning
+tensorflow==2.10.1
+
+# API
+fastapi
+uvicorn
+python-multipart
+
+# Image Processing
+pillow
+numpy
+matplotlib
+
+# TensorFlow Serving (optional)
+tensorflow-serving-api==2.10.1

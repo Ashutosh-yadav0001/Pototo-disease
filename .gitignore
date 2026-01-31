@@ -1,15 +1,43 @@
 # Python virtual environments
 venv_gpu/
+venv/
+.venv/
 project_env/
 __pycache__/
 *.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
 
 # React dependencies
 node_modules/
+npm-debug.log
+yarn-error.log
 
 # Environment variables (security)
 .env
+.env.local
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Build outputs
+frontend/build/

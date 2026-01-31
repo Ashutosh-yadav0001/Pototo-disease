@@ -19,25 +19,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Dropzone Styles */
-.MuiDropzoneArea-root {
-  background-color: transparent !important;
-  border: none !important;
-  min-height: 200px !important;
-}
-
-.MuiDropzoneArea-text {
-  color: rgba(255, 255, 255, 0.7) !important;
-  font-size: 1rem !important;
-  margin-top: 1rem !important;
-}
-
-.MuiDropzoneArea-icon {
-  color: #10b981 !important;
-  width: 60px !important;
-  height: 60px !important;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -56,6 +37,12 @@ code {
   background: linear-gradient(180deg, #34d399, #10b981);
 }
 
+/* Selection */
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+  color: #fff;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -71,23 +58,87 @@ code {
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.7;
+    transform: scale(1.05);
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  100% {
-    background-position: 200% 0;
+  to {
+    transform: rotate(360deg);
   }
 }
 
-/* Selection */
-::selection {
-  background: rgba(16, 185, 129, 0.3);
-  color: #fff;
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .MuiContainer-root {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  .MuiTypography-h4 {
+    font-size: 1.5rem !important;
+  }
+  
+  .MuiTypography-h5 {
+    font-size: 1.25rem !important;
+  }
+  
+  .MuiTypography-body1 {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .MuiToolbar-root {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  
+  .MuiCard-root {
+    border-radius: 16px !important;
+  }
+  
+  .MuiCardContent-root {
+    padding: 12px !important;
+  }
+  
+  .MuiButton-root {
+    padding: 10px 16px !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Touch device improvements */
+@media (hover: none) {
+  .MuiButton-root:hover {
+    transform: none !important;
+  }
+  
+  .MuiCard-root:hover {
+    transform: none !important;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Loading animation enhancement */
+.loading-spinner {
+  animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, .MuiCard-root {
+  transition: all 0.2s ease-in-out;
 }

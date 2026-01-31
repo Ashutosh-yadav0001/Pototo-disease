@@ -1,0 +1,147 @@
+================================================================================
+                    TOMATO DISEASE CLASSIFICATION - UPGRADE PLAN
+================================================================================
+
+Goal: Extend the current potato disease classifier to also detect diseases in 
+tomato leaves. This will make the project a multi-plant disease detection system.
+
+
+--------------------------------------------------------------------------------
+PHASE 1: DATASET PREPARATION
+--------------------------------------------------------------------------------
+
+Get Tomato Disease Dataset:
+- Source: PlantVillage Dataset (https://www.kaggle.com/datasets/emmarex/plantdisease)
+- Same source as potato dataset
+
+Tomato Disease Classes Available:
+1. Tomato___Bacterial_spot        - Bacterial infection
+2. Tomato___Early_blight          - Fungal disease
+3. Tomato___Late_blight           - Fungal disease
+4. Tomato___Leaf_Mold             - Fungal disease
+5. Tomato___Septoria_leaf_spot    - Fungal disease
+6. Tomato___Spider_mites          - Pest damage
+7. Tomato___Target_Spot           - Fungal disease
+8. Tomato___Yellow_Leaf_Curl_Virus - Viral disease
+9. Tomato___mosaic_virus          - Viral disease
+10. Tomato___healthy              - No disease
+
+Folder Structure:
+Training/
+├── PlantVillage/
+│   ├── Potato___Early_blight/
+│   ├── Potato___Late_blight/
+│   ├── Potato___healthy/
+│   ├── Tomato___Bacterial_spot/      <- NEW
+│   ├── Tomato___Early_blight/        <- NEW
+│   ├── Tomato___Late_blight/         <- NEW
+│   ├── Tomato___Leaf_Mold/           <- NEW
+│   ├── Tomato___healthy/             <- NEW
+│   └── ... (other tomato classes)
+
+
+--------------------------------------------------------------------------------
+PHASE 2: MODEL TRAINING
+--------------------------------------------------------------------------------
+
+Option A: Two Separate Models (Recommended)
+- Train a separate model for tomato
+- Create Training_Tomato.ipynb (copy potato notebook, modify for tomato)
+- Save model as saved_models/tomato/1
+- This keeps models isolated and easier to maintain
+
+Option B: Single Combined Model
+- Train one model that detects both potato and tomato diseases
+- Pros: Single model, simpler deployment
+- Cons: May have lower accuracy, harder to maintain
+
+Training Steps:
+1. Copy Training.ipynb -> Training_Tomato.ipynb
+2. Update dataset path to point to tomato folders
+3. Update class_names list
+4. Train for 50 epochs
+5. Save model to saved_models/tomato/1
+6. Save .h5 file as tomatoes.h5
+
+
+--------------------------------------------------------------------------------
+PHASE 3: BACKEND API UPDATES
+--------------------------------------------------------------------------------
+
+Update API/main.py:
+
+1. Load both models:
+   MODEL_POTATO = tf.keras.models.load_model("../saved_models/potato/1")
+   MODEL_TOMATO = tf.keras.models.load_model("../saved_models/tomato/1")
+
+2. Add plant type parameter to predict endpoint:
+   @app.post("/predict/{plant_type}")
+   async def predict(plant_type: str, file: UploadFile):
+       if plant_type == "potato":
+           model = MODEL_POTATO
+           classes = ["Early Blight", "Late Blight", "Healthy"]
+       elif plant_type == "tomato":
+           model = MODEL_TOMATO
+           classes = ["Bacterial Spot", "Early Blight", ...]
+
+3. Add plant list endpoint:
+   @app.get("/plants")
+   def get_plants():
+       return ["potato", "tomato"]
+
+
+--------------------------------------------------------------------------------
+PHASE 4: FRONTEND UPDATES
+--------------------------------------------------------------------------------
+
+Update frontend/src/home.js:
+
+1. Add plant selector dropdown:
+   <Select value={plantType} onChange={(e) => setPlantType(e.target.value)}>
+     <MenuItem value="potato">Potato</MenuItem>
+     <MenuItem value="tomato">Tomato</MenuItem>
+   </Select>
+
+2. Update API call:
+   const res = await axios.post(`${API_URL}/predict/${plantType}`, formData);
+
+3. Update disease icons and colors for tomato diseases
+
+
+--------------------------------------------------------------------------------
+PHASE 5: UPDATE DOCUMENTATION
+--------------------------------------------------------------------------------
+
+- Update README.md with tomato disease classes
+- Add tomato sample images to sample_images/
+- Update project description
+
+
+--------------------------------------------------------------------------------
+ESTIMATED TIME
+--------------------------------------------------------------------------------
+
+Phase                           | Time
+--------------------------------|----------------
+Dataset download & organise     | 30 mins
+Create training notebook        | 1 hour
+Train model (50 epochs)         | 2-4 hours (depends on GPU)
+Update backend API              | 30 mins
+Update frontend                 | 1 hour
+Testing & debugging             | 1 hour
+--------------------------------|----------------
+TOTAL                           | 6-8 hours
+
+
+--------------------------------------------------------------------------------
+NOTES
+--------------------------------------------------------------------------------
+
+- Make sure you have enough GPU memory for training
+- Consider reducing number of tomato classes if training takes too long
+- Test thoroughly after integrating with frontend
+- Update docker-compose.yml if adding new model files
+
+================================================================================
+                              END OF PLAN
+================================================================================

@@ -1,0 +1,15 @@
+# Python virtual environments
+venv_gpu/
+project_env/
+__pycache__/
+*.pyc
+
+# React dependencies
+node_modules/
+
+# Environment variables (security)
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
